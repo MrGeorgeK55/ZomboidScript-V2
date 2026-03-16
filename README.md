@@ -28,6 +28,26 @@ Through Telegram, administrators can monitor the server, see who is online, and 
 
 ---
 
+# Commands (Private Chat Only)
+
+- `/start` — Start the bot (anyone)
+- `/help` — Show help (anyone)
+- `/whoami` — Show your Telegram info + role (anyone)
+- `/redeem CODE` — Redeem an admin invite code (anyone)
+- `/claimowner` — Claim owner role (first user only)
+- `/addadmin` — Create an invite code (owner)
+- `/listadmins` — List owner/admins and pending codes (owner)
+- `/status` — Server status summary (admin/owner)
+- `/players` — List online players (admin/owner)
+- `/lastseen` — Last successful ping time (admin/owner)
+- `/servermsg CUSTOMTEXT` — Send in‑game server message (admin/owner)
+- `/checkmods` — Manual mod update check (owner)
+- `/hardreset` — Save + quit with confirmation (owner)
+- `/forcerestart` — Save + quit immediately (owner)
+- `/cancel` — Cancel pending confirmation (owner)
+
+---
+
 # Features
 
 ### Telegram-based monitoring
