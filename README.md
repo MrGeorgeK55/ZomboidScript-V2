@@ -25,31 +25,7 @@ Through Telegram, administrators can monitor the server, see who is online, and 
 4. The first person who runs `/claimowner` becomes the **owner** (if you have problem with this edit `users.json` and put your ID on owner and restart the bot)
 5. Optionally invite admins using `/addadmin`
 <<<<<<< HEAD
-6. The bot will monitor the server and notify admins when something requires attention
-
----
-
-# Commands (Private Chat Only)
-
-- `/start` - Start the bot (anyone)
-- `/help` - Show help (anyone)
-- `/whoami` - Show your Telegram info + role (anyone)
-- `/redeem CODE` - Redeem an admin invite code (anyone)
-- `/claimowner` - Claim owner role (first user only)
-- `/addadmin` - Create an invite code (owner)
-- `/listadmins` - List owner/admins and pending codes (owner)
-- `/deleteadmin ID` - Delete an admin by numeric Telegram ID (owner)
-- `/status` - Server status summary (admin/owner)
-- `/players` - List online players (admin/owner)
-- `/lastseen` - Last successful ping time (admin/owner)
-- `/servermsg CUSTOMTEXT` - Send in-game server message (admin/owner)
-- `/checkmods` - Manual mod update check (owner)
-- `/hardreset` - Clear admins and pending invite codes (owner)
-- `/forcerestart` - Save + quit immediately (owner)
-- `/cancel` - Cancel pending confirmation (owner)
-=======
 6. The bot will monitor the server and notify admins when something requires attention such as if the server is offline for a long time or notifications of the updates
->>>>>>> a21a6c7679bf175465a21ddc08c3842ebaa5dac4
 
 ---
 
@@ -91,7 +67,7 @@ Designed to work even on rented servers where only **RCON and SFTP access** are 
 # How it works (Simple Overview)
 
 - Connects via **RCON** to check server status and players  
-- Checks for **mod updates** using RCON + server logs  (Yes this would be more easy if the RCON responded with the actual mods status instead of wirting the answer on the logs)
+- Checks for **mod updates** using RCON + server logs  (Yes this would be more easy if the RCON responded with the actual mods status instead of writing the answer on the logs)
 - Sends **Telegram notifications** to admins and the owner  
 - Can **restart the server safely** when updates are required (uses /servermsg to alert players currently on the server)  
 - Allows the owner to **invite admins** to monitor the server
