@@ -18,12 +18,13 @@ Through Telegram, administrators can monitor the server, see who is online, and 
 
 # Usage
 
-1. Generate a bot token with **@BotFather**
+1. Generate a bot token with **@BotFather** in telegram
 2. Edit `config.ini` with your Project Zomboid server information  
    *(Supports rented servers such as Bisect Hosting)*
 3. Start the bot and open it in Telegram
-4. The first person who runs `/claimowner` becomes the **owner**
+4. The first person who runs `/claimowner` becomes the **owner** (if you have problem with this edit `users.json` and put your ID on owner and restart the bot)
 5. Optionally invite admins using `/addadmin`
+<<<<<<< HEAD
 6. The bot will monitor the server and notify admins when something requires attention
 
 ---
@@ -46,6 +47,9 @@ Through Telegram, administrators can monitor the server, see who is online, and 
 - `/hardreset` - Clear admins and pending invite codes (owner)
 - `/forcerestart` - Save + quit immediately (owner)
 - `/cancel` - Cancel pending confirmation (owner)
+=======
+6. The bot will monitor the server and notify admins when something requires attention such as if the server is offline for a long time or notifications of the updates
+>>>>>>> a21a6c7679bf175465a21ddc08c3842ebaa5dac4
 
 ---
 
