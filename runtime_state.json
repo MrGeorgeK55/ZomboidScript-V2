@@ -1,0 +1,12 @@
+{
+  "server_status": "unknown",
+  "last_successful_ping": null,
+  "last_status_change": null,
+  "consecutive_failures": 0,
+  "last_mod_check": null,
+  "last_mod_result": "unknown",
+  "last_restart_time": null,
+  "last_restart_reason": null,
+  "last_known_player_count": null,
+  "last_known_players": []
+}

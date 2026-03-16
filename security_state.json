@@ -1,0 +1,8 @@
+{
+  "failed_invite_attempts": {},
+  "temporary_blocks": {},
+  "rate_limits": {},
+  "pending_confirmations": {},
+  "last_offline_alert_at": null,
+  "last_online_alert_at": null
+}
