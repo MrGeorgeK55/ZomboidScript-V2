@@ -1,22 +1,91 @@
 # ZomBot Checker
 
+*A lightweight Telegram bot that monitors and maintains your Project Zomboid server.*
+
+---
+
 ## Telegram bot to monitor your Project Zomboid server
 
-## Basic explanation:
-- It connects via RCON to check server status and players.
-- It checks mods updates via RCON + SFTP logs.
-- It restarts the server and notifies admins/owner.
-- It lets the owner invite admins to monitor the server.
+**ZomboidScript-V2** is a lightweight automation companion for running a **Project Zomboid server**, designed to make server maintenance easier and more predictable.
 
-## Important:
-- Configure `config.ini` before running the bot.
-- Commands only work in private chat.
-- Heartbeat interval and modcheck interval are configurable in `config.ini`.
-- Languages are in `locales/en.json` and `locales/es.json`.
+Instead of constantly checking logs or worrying about mod updates breaking the server, this tool acts as a small watchdog that keeps an eye on your server and communicates with you through Telegram.
 
-## Run:
-- `pip install -r requirements.txt`
-- `python zombot.py`
+The bot connects to the server using **RCON**, performs regular health checks, and reads server logs to detect when **Workshop mods require updates**. If an update is detected, it can warn players in-game, give them time to finish what they are doing, and safely restart the server so everything stays compatible and stable.
 
-## Libraries used:
-- `paramiko`
+Through Telegram, administrators can monitor the server, see who is online, and run maintenance actions without needing direct access to the server machine.
+
+---
+
+# Usage
+
+1. Generate a bot token with **@BotFather**
+2. Edit `config.ini` with your Project Zomboid server information  
+   *(Supports rented servers such as Bisect Hosting)*
+3. Start the bot and open it in Telegram
+4. The first person who runs `/claimowner` becomes the **owner**
+5. Optionally invite admins using `/addadmin`
+6. The bot will monitor the server and notify admins when something requires attention
+
+---
+
+# Features
+
+### Telegram-based monitoring
+Monitor your Project Zomboid server directly from a private Telegram chat.
+
+### Server status and player visibility
+Uses **RCON** to check if the server is responding and to list connected players.
+
+### Automatic mod update detection
+Runs the built-in mod update check through **RCON** and analyzes server logs through **SFTP** to detect when mods require updates.
+
+### Safe restart workflow
+When updates are detected, the bot can warn players and coordinate a safe restart instead of leaving the server running outdated mods.
+
+### Owner and admin roles
+Supports an **owner/admin permission model**, allowing trusted admins to monitor the server without exposing full credentials.
+
+### Invite-based admin access
+Admins are added through temporary invite codes, keeping the bot private even if the bot account is publicly visible.
+
+### Configurable monitoring intervals
+Heartbeat and mod-check intervals can be adjusted in `config.ini`.
+
+### Localization support
+Includes **English and Spanish language files** in the `locales/` folder.
+
+### Lightweight and self-hosted
+Runs as a simple Python script with minimal dependencies.
+
+### Compatible with hosted servers
+Designed to work even on rented servers where only **RCON and SFTP access** are available.
+
+---
+
+# How it works (Simple Overview)
+
+- Connects via **RCON** to check server status and players  
+- Checks for **mod updates** using RCON + server logs  
+- Sends **Telegram notifications** to admins  
+- Can **restart the server safely** when updates are required  
+- Allows the owner to **invite admins** to monitor the server
+
+---
+
+# Important Notes
+
+- Configure `config.ini` before running the bot
+- Commands only work in **private chat**
+- Monitoring intervals are configurable in `config.ini`
+- Language files are located in:
+  - `locales/en.json`
+  - `locales/es.json`
+
+---
+
+# Run
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
