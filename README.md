@@ -123,10 +123,12 @@ All commands must be used in **private chat with the bot**.
 | `/status` | Admin / Owner | Displays the current server status and recent activity information. |
 | `/players` | Admin / Owner | Shows the list of currently connected players. |
 | `/lastseen` | Admin / Owner | Shows the last time the server responded to a heartbeat check. |
+| `/servermsg CUSTOMTEXT` | Admin / Owner | Sends a custom in-game server message via RCON. |
 | `/checkmods` | Owner | Manually checks if mods require updates. |
 | `/addadmin` | Owner | Generates a temporary invitation code to add a new admin. |
 | `/listadmins` | Owner | Shows the current list of admins and pending invite codes. |
-| `/hard-reset` | Owner | Forces a server save and restart. Requires confirmation. |
+| `/hardreset` | Owner | Forces a server save and restart. Requires confirmation. |
+| `/forcerestart` | Owner | Immediately saves + quits to trigger a restart. |
 | `/cancel` | Owner | Cancels a pending action such as a restart confirmation. |
 
 ---
