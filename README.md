@@ -1,4 +1,4 @@
-# ZomBot Checker
+﻿# ZomBot Checker
 
 *A lightweight Telegram bot that monitors and maintains your Project Zomboid server.*
 
@@ -30,23 +30,25 @@ Through Telegram, administrators can monitor the server, see who is online, and 
 
 # Commands (Private Chat Only)
 
-- `/start` — Start the bot (anyone)
-- `/help` — Show help (anyone)
-- `/whoami` — Show your Telegram info + role (anyone)
-- `/redeem CODE` — Redeem an admin invite code (anyone)
-- `/claimowner` — Claim owner role (first user only)
-- `/addadmin` — Create an invite code (owner)
-- `/listadmins` — List owner/admins and pending codes (owner)
-- `/status` — Server status summary (admin/owner)
-- `/players` — List online players (admin/owner)
-- `/lastseen` — Last successful ping time (admin/owner)
-- `/servermsg CUSTOMTEXT` — Send in‑game server message (admin/owner)
-- `/checkmods` — Manual mod update check (owner)
-- `/hardreset` — Save + quit with confirmation (owner)
-- `/forcerestart` — Save + quit immediately (owner)
-- `/cancel` — Cancel pending confirmation (owner)
+- `/start` - Start the bot (anyone)
+- `/help` - Show help (anyone)
+- `/whoami` - Show your Telegram info + role (anyone)
+- `/redeem CODE` - Redeem an admin invite code (anyone)
+- `/claimowner` - Claim owner role (first user only)
+- `/addadmin` - Create an invite code (owner)
+- `/listadmins` - List owner/admins and pending codes (owner)
+- `/deleteadmin ID` - Delete an admin by numeric Telegram ID (owner)
+- `/status` - Server status summary (admin/owner)
+- `/players` - List online players (admin/owner)
+- `/lastseen` - Last successful ping time (admin/owner)
+- `/servermsg CUSTOMTEXT` - Send in-game server message (admin/owner)
+- `/checkmods` - Manual mod update check (owner)
+- `/hardreset` - Clear admins and pending invite codes (owner)
+- `/forcerestart` - Save + quit immediately (owner)
+- `/cancel` - Cancel pending confirmation (owner)
 
 ---
+
 
 # Features
 
@@ -127,8 +129,9 @@ All commands must be used in **private chat with the bot**.
 | `/checkmods` | Owner | Manually checks if mods require updates. |
 | `/addadmin` | Owner | Generates a temporary invitation code to add a new admin. |
 | `/listadmins` | Owner | Shows the current list of admins and pending invite codes. |
-| `/hardreset` | Owner | Forces a server save and restart. Requires confirmation. |
-| `/forcerestart` | Owner | Immediately saves + quits to trigger a restart. |
+| `/deleteadmin ID` | Owner | Deletes an admin by numeric Telegram ID. |
+| `/hardreset` | Owner | Clears admins and pending invite codes (keeps owner). Requires confirmation. |
+| `/forcerestart` | Owner | Sends save + quit immediately to trigger a restart. |
 | `/cancel` | Owner | Cancels a pending action such as a restart confirmation. |
 
 ---
@@ -139,3 +142,4 @@ Install dependencies:
 
 ```bash
 pip install -r requirements.txt
+

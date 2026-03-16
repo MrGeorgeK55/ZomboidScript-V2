@@ -34,7 +34,8 @@ ACTIVE_LANGUAGE = DEFAULT_LANGUAGE
 DEFAULT_USERS = {
     "owner_id": None,
     "admins": [],
-    "pending_codes": []
+    "pending_codes": [],
+    "user_profiles": {}
 }
 
 DEFAULT_RUNTIME = {
@@ -412,6 +413,7 @@ def build_command_menu() -> list[dict]:
         {"command": "claimowner", "description": t("cmd_claimowner")},
         {"command": "addadmin", "description": t("cmd_addadmin")},
         {"command": "listadmins", "description": t("cmd_listadmins")},
+        {"command": "deleteadmin", "description": t("cmd_deleteadmin")},
         {"command": "status", "description": t("cmd_status")},
         {"command": "players", "description": t("cmd_players")},
         {"command": "lastseen", "description": t("cmd_lastseen")},
@@ -471,6 +473,45 @@ def get_role(user_id: int, users: dict) -> str:
     if is_admin(user_id, users):
         return "admin"
     return "unknown"
+
+
+def update_user_profile(users: dict, msg: dict) -> bool:
+    profiles = users.setdefault("user_profiles", {})
+    user_id = msg["user_id"]
+    key = str(user_id)
+
+    entry = profiles.get(key, {})
+    username = msg.get("username")
+    first_name = msg.get("first_name", "")
+    last_name = msg.get("last_name", "")
+
+    new_entry = {
+        "username": username,
+        "first_name": first_name,
+        "last_name": last_name,
+        "updated_at": now_utc_iso()
+    }
+
+    if entry != new_entry:
+        profiles[key] = new_entry
+        return True
+    return False
+
+
+def format_user_label(user_id: int, users: dict) -> str:
+    profiles = users.get("user_profiles", {})
+    entry = profiles.get(str(user_id), {})
+
+    username = entry.get("username")
+    first_name = entry.get("first_name", "")
+    last_name = entry.get("last_name", "")
+    full_name = f"{first_name} {last_name}".strip()
+
+    if username:
+        return f"@{username} ({user_id})"
+    if full_name:
+        return f"{full_name} ({user_id})"
+    return str(user_id)
 
 
 def command_name(text: str) -> str:
@@ -1384,9 +1425,12 @@ def handle_listadmins(bot_token: str, chat_id: int, user_id: int, users: dict) -
     admins = users.get("admins", [])
     pending = users.get("pending_codes", [])
 
+    owner_id = users.get("owner_id")
+    owner_label = format_user_label(owner_id, users) if owner_id is not None else t("listadmins_unknown")
+
     lines = [
         t("listadmins_header"),
-        t("listadmins_owner", owner_id=users.get("owner_id")),
+        t("listadmins_owner", label=owner_label),
         t("listadmins_admins_count", count=len(admins))
     ]
 
@@ -1394,7 +1438,7 @@ def handle_listadmins(bot_token: str, chat_id: int, user_id: int, users: dict) -
         lines.append("")
         lines.append(t("listadmins_admin_list"))
         for admin_id in admins:
-            lines.append(f"- {admin_id}")
+            lines.append(f"- {format_user_label(admin_id, users)}")
 
     lines.append("")
     lines.append(t("listadmins_pending", count=len(pending)))
@@ -1411,6 +1455,38 @@ def handle_listadmins(bot_token: str, chat_id: int, user_id: int, users: dict) -
             )
 
     telegram_send_message(bot_token, chat_id, "\n".join(lines))
+
+
+def handle_deleteadmin(bot_token: str, chat_id: int, user_id: int, users: dict, text: str) -> None:
+    if not is_owner(user_id, users):
+        send_text(bot_token, chat_id, "not_authorized")
+        return
+
+    parts = text.split(maxsplit=1)
+    if len(parts) < 2:
+        send_text(bot_token, chat_id, "deleteadmin_usage")
+        return
+
+    target_raw = parts[1].strip()
+    if not target_raw.isdigit():
+        send_text(bot_token, chat_id, "deleteadmin_invalid")
+        return
+
+    target_id = int(target_raw)
+    if target_id == users.get("owner_id"):
+        send_text(bot_token, chat_id, "deleteadmin_owner_block")
+        return
+
+    admins = users.get("admins", [])
+    if target_id not in admins:
+        send_text(bot_token, chat_id, "deleteadmin_not_found")
+        return
+
+    admins.remove(target_id)
+    users["admins"] = admins
+    save_users(users)
+
+    send_text(bot_token, chat_id, "deleteadmin_success", label=format_user_label(target_id, users))
 
 
 def handle_status(bot_token: str, chat_id: int, user_id: int, users: dict, cfg: ConfigParser) -> None:
@@ -1517,7 +1593,7 @@ def handle_hard_reset(bot_token: str, chat_id: int, user_id: int, users: dict, s
         send_text(bot_token, chat_id, "not_authorized")
         return
 
-    set_pending_confirmation(security, user_id, "hard_reset", minutes=2)
+    set_pending_confirmation(security, user_id, "reset_users", minutes=2)
     save_security(security)
 
     send_text(bot_token, chat_id, "hardreset_confirm")
@@ -1590,32 +1666,26 @@ def handle_pending_confirmation_text(bot_token: str, msg: dict, users: dict, cfg
     clear_pending_confirmation(security, user_id)
     save_security(security)
 
-    if action != "hard_reset":
+    if action != "reset_users":
         send_text(bot_token, chat_id, "hardreset_unknown_action")
         return True
 
     try:
         send_text(bot_token, chat_id, "hardreset_executing")
-        save_response, quit_response = save_and_quit_server(cfg)
 
-        runtime = load_runtime()
-        runtime["last_restart_time"] = now_utc_iso()
-        runtime["last_restart_reason"] = "hard_reset"
-        save_runtime(runtime)
+        users_data = load_users()
+        owner_id = users_data.get("owner_id")
+        users_data["admins"] = []
+        users_data["pending_codes"] = []
+        users_data["owner_id"] = owner_id
+        save_users(users_data)
 
-        send_text(
-            bot_token,
-            chat_id,
-            "hardreset_success",
-            save=save_response,
-            quit=quit_response
-        )
-        log(f"Hard reset executed by owner user_id={user_id}")
-        start_post_restart_watch(bot_token, users, cfg, "hard_reset")
+        send_text(bot_token, chat_id, "hardreset_success")
+        log(f"User reset executed by owner user_id={user_id}")
 
     except Exception as e:
         send_text(bot_token, chat_id, "hardreset_error", error=e)
-        log(f"Hard reset error: {e}")
+        log(f"User reset error: {e}")
 
     return True
 
@@ -1628,6 +1698,9 @@ def handle_text_command(bot_token: str, msg: dict, users: dict, cfg: ConfigParse
     first_name = msg["first_name"]
     last_name = msg["last_name"]
     text = msg["text"]
+
+    if update_user_profile(users, msg):
+        save_users(users)
 
     if chat_type != "private":
         if text.startswith("/"):
@@ -1684,6 +1757,10 @@ def handle_text_command(bot_token: str, msg: dict, users: dict, cfg: ConfigParse
 
     if cmd == "/listadmins":
         handle_listadmins(bot_token, chat_id, user_id, users)
+        return
+
+    if cmd == "/deleteadmin":
+        handle_deleteadmin(bot_token, chat_id, user_id, users, text)
         return
 
     if cmd == "/status":
