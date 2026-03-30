@@ -106,7 +106,7 @@ All commands must be used in **private chat with the bot**.
 | `/players` | Admin / Owner | Shows the list of currently connected players. |
 | `/lastseen` | Admin / Owner | Shows the last time the server responded to a heartbeat check. |
 | `/servermsg CUSTOMTEXT` | Admin / Owner | Sends a custom in-game server message via RCON. |
-| `/checkmods` | Owner | Manually checks if mods require updates. |
+| `/checkmods` | Admin / Owner | Manually checks if mods require updates. |
 | `/addadmin` | Owner | Generates a temporary invitation code to add a new admin. |
 | `/listadmins` | Owner | Shows the current list of admins and pending invite codes. |
 | `/deleteadmin ID` | Owner | Deletes an admin by numeric Telegram ID. |

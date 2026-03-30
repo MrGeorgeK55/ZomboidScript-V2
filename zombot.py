@@ -1571,7 +1571,7 @@ def handle_servermsg(bot_token: str, chat_id: int, user_id: int, users: dict, cf
 
 
 def handle_checkmods(bot_token: str, chat_id: int, user_id: int, users: dict, cfg: ConfigParser) -> None:
-    if not is_owner(user_id, users):
+    if not is_authorized(user_id, users):
         send_text(bot_token, chat_id, "not_authorized")
         return
 

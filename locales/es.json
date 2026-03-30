@@ -11,7 +11,7 @@
   "cmd_players": "admin/owner: jugadores",
   "cmd_lastseen": "admin/owner: último ping",
   "cmd_servermsg": "admin/owner: server msg",
-  "cmd_checkmods": "owner: check mods",
+  "cmd_checkmods": "admin/owner: check mods",
   "cmd_hardreset": "owner: resetear usuarios",
   "cmd_forcerestart": "owner: reinicio inmediato",
   "cmd_cancel": "owner: cancelar acción",
